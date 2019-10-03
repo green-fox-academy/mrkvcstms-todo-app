@@ -60,7 +60,7 @@ int countLines()
 {
 
     std::ifstream inputStream;
-    inputStream.open("toDoList.txt");
+    inputStream.open("../toDoList.txt");
 
     int numLines = 0;
     std::string temp;
@@ -78,7 +78,7 @@ void listTasks()
     std::string lines;
 
     std::ifstream inputFile;
-    inputFile.open("toDoList.txt");
+    inputFile.open("../toDoList.txt");
 
     if (lineCounter == 0) {
         std::cout << "No todos for today! (+:";
@@ -95,7 +95,7 @@ void listTasks()
 void addNewTask(string whatToAdd)
 {
     std::ofstream myFile;
-    myFile.open("toDoList.txt", std::ios_base::app);
+    myFile.open("../toDoList.txt", std::ios_base::app);
     myFile << endl << "[ ] " << whatToAdd;
     myFile.close();
 
@@ -135,7 +135,7 @@ vector<string> createVector()
     std::string lines;
 
     std::ifstream inputFile;
-    inputFile.open("toDoList.txt");
+    inputFile.open("../toDoList.txt");
 
     for (int i = 0; i < lineCounter; ++i) {
         std::getline(inputFile, lines);
@@ -149,7 +149,7 @@ vector<string> createVector()
 void printOutVector(vector<string> toPrint)
 {
     std::ofstream myFile;
-    myFile.open("toDoList.txt");
+    myFile.open("../toDoList.txt");
     for (int i = 0; i < toPrint.size() - 1; i++) {
         myFile << toPrint[i] << endl;
     }
