@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using std::string;
 using std::cout;
 using std::cin;
 using std::endl;
+using std::vector;
 
 #include <fstream>
 
@@ -11,6 +13,9 @@ void instructions();
 int countLines();
 void listTasks();
 void addNewTask(string whatToAdd);
+void removeTask(string num);
+vector<string> createVector();
+void taskDone(string num);
 
 int main(int argc, char* argv[])
 {
@@ -24,6 +29,10 @@ int main(int argc, char* argv[])
         } else if (string(argv[2]) == "-a") {
             if (argc == 4) addNewTask(argv[3]);
             else cout << "No new tasks to add!" << endl;
+        } else if (string(argv[2]) == "-r") {
+                removeTask(argv[3]);
+        }else if (string(argv[2]) == "-c") {
+            taskDone(argv[3]);
         }
     }
 
@@ -84,8 +93,63 @@ void addNewTask(string whatToAdd)
 {
     std::ofstream myFile;
     myFile.open("toDoList.txt", std::ios_base::app);
-    myFile << endl << whatToAdd;
+    myFile << endl << "[ ] " << whatToAdd;
     myFile.close();
 
     cout << "New task added!" << endl;
+}
+
+
+void removeTask(string num)
+{
+    if(std::stoi(num) <= countLines()) {
+        vector<string> myVector = createVector();
+
+        myVector.erase(myVector.begin() + std::stoi(num) - 1);
+
+        std::ofstream myFile;
+        myFile.open("toDoList.txt");
+        for (int i = 0; i < myVector.size() - 1; i++) {
+            myFile << myVector[i] << endl;
+        }
+        myFile << myVector[myVector.size() - 1];
+        myFile.close();
+
+        cout << "Task removed!" << endl;
+    } else cout << "There isn't that many tasks!" << endl;
+}
+
+void taskDone(string num)
+{
+    if(std::stoi(num) <= countLines()) {
+        vector<string> myVector = createVector();
+
+        myVector[std::stoi(num)][1] = 'X';
+
+        std::ofstream myFile;
+        myFile.open("toDoList.txt");
+        for (int i = 0; i < myVector.size() - 1; i++) {
+            myFile << myVector[i] << endl;
+        }
+        myFile << myVector[myVector.size() - 1];
+        myFile.close();
+
+        cout << "Task completed!" << endl;
+    } else cout << "There isn't that many tasks!" << endl;
+}
+
+
+vector<string> createVector()
+{
+    vector<string> myVector;
+    int lineCounter = countLines();
+    std::string lines;
+    std::ifstream inputFile;
+    inputFile.open("toDoList.txt");
+    for (int i = 0; i < lineCounter; ++i) {
+        std::getline(inputFile, lines);
+        myVector.push_back(lines);
+    }
+    inputFile.close();
+    return myVector;
 }
